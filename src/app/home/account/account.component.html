@@ -1,0 +1,63 @@
+<div class="row">
+  <header >
+<nav class="top-nav blue darken-1 col s12">
+
+<div class="nav-wrapper">
+
+    <a href="#" class="page-title">ACCOUNT</a>
+</div>      
+</nav>
+</header>
+
+    <div class="input-field col s4">
+          <i class="material-icons prefix">search</i>
+          <input #gb id="icon_prefix" type="text" class="validate">
+          <label for="icon_prefix">Search</label>
+
+        
+        </div>
+
+   <p-dropdown [options]="ut" [style]="{'width':'150px'}"  [(ngModel)]="selectedUserType" placeholder="Select a UT"></p-dropdown>
+<p>Selected UserType: {{selectedUserType ? selectedUserType.name : 'All'}}</p>   
+
+
+<div class="col s12">        
+
+
+<p-dataTable [value]="accounts" [paginator]="true" [rows]="10"  [globalFilter]="gb" [(selection)]="selectedAccount" (onRowSelect)="onRowSelect($event)" #dt>
+       <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+  <p-column field="PiaUserId" header="Id" [sortable]="true"></p-column>
+  <p-column field="FirstName" header="FirstName" [filter]="true" filterPlaceholder="Search"></p-column>
+  <p-column field="MiddleName" header="MiddleName" [filter]="true" filterPlaceholder="Search"></p-column>
+  <p-column field="LastName" header="LastName"></p-column>
+   <p-column field="UserName" header="UserName"></p-column>
+<p-footer><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add">Add</button></div></p-footer>
+</p-dataTable>
+
+<p-dialog header="Account Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+ 
+        <div class="class=ui-grid ui-grid-responsive ui-fluid" *ngIf="account">
+    <div class="row">
+       
+         <div class="col s6">
+              <label>Username</label>
+          <input pInputText id="UserName" [(ngModel)]="account.UserName" type="text" class="validate" />
+        </div>
+
+     </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete" *ngIf="displayDelete">Delete</button>
+            <button type="button" pButton icon="fa-check" (click)="save()" label="Save">Save</button>
+        </div>
+    </p-footer>
+</p-dialog>
+
+
+</div>
+
+</div>
+
+
+            
