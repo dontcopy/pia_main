@@ -75,6 +75,7 @@ export class AccountComponent implements OnInit {
             this.ut.push({label:element.Name,value:{id:element.Id,name:element.Name}});
         }
         )});
+        this.userTypeService.getUserTypes().then(a=>this.userTypes=a);
   }
  
   ngOnInit(): void{

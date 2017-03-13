@@ -37,7 +37,10 @@
 <p-dialog header="Account Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
  
     <form [formGroup]="accountForm" novalidate>
+  
+   
     <div>
+ 
     <label class="center-block">First Name:
     <input formControlName="firstName">
     </label>
@@ -59,7 +62,9 @@
     <input formControlName="confirm" type="password">
     </label>
     <label class="center-block">User Type:
-    <input formControlName="userType">
+     <select formControlName="userType">
+      <option *ngFor="let userType of userTypes" [value]=userType.Id >{{userType.Name}}</option>
+    </select>
     </label>
     <p>Form value: {{ accountForm.value | json }}</p>
     <p>Form status: {{ accountForm.status | json }}</p>
