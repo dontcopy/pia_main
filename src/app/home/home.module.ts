@@ -7,22 +7,26 @@ import { CommonModule }   from '@angular/common';
 import {DataGridModule} from 'primeng/primeng';
 import {DataTableModule,SharedModule} from 'primeng/primeng';
 import {DialogModule} from 'primeng/primeng';
-import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import {DropdownModule} from 'primeng/primeng';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ValidationControlComponent } from "../shared/validation-control/validation-control.component";
+
 @NgModule({
   declarations: [
-  
+   ValidationControlComponent,
   HomeComponent ,
     AccountComponent,
     BankComponent
   ],
   imports: [
-      FormsModule,
+    FormsModule,
     HttpModule,
     CommonModule,
     HomeRoutingModule,
-    DataGridModule,DataTableModule,SharedModule,DialogModule,DropdownModule
+    ReactiveFormsModule,
+    DataGridModule,DataTableModule,SharedModule,DialogModule,DropdownModule,
+    
   ],
 
 })

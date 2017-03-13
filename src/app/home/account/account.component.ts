@@ -4,47 +4,72 @@ import { Account } from "../../model/account";
 import { SelectItem } from "primeng/primeng";
 import { UserTypeService } from "../../service/userType-service";
 import { UserType } from "../../model/userType";
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { accountValidation } from "./account.validation";
+import { ValidationControlComponent } from "../../shared/validation-control/validation-control.component";
+import { ValidationService } from "../../service/validation-service";
+
 
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css'],
-  providers:[AccountService,UserTypeService]
+  providers:[AccountService,UserTypeService],
+ 
 })
 export class AccountComponent implements OnInit {
-accounts:Account[];
+   
+  accounts:Account[];
   selectedAccount:Account;
   displayDialog:boolean;
   newAccount:boolean;
   account:Account = new Account();
   displayDelete:boolean;
-ut: SelectItem[];
+  ut: SelectItem[];
   userTypes:UserType[];
-    selectedUserType: string;
-
-
+  selectedUserType: string;
+  accountForm:FormGroup;  
+  accountValidationForm:accountValidation;
+  
   constructor (
     private accountService:AccountService,private userTypeService:UserTypeService
-    
+    ,private formBuilder:FormBuilder
       
-  ) { //this.ut=[];
-    //this.ut.push({label:'All',value:null});
-   /* this.getUserType();
-    for (var index = 0; index < this.userTypes.length; index++) {
-      var element = this.userTypes[index];
-      this.ut.push({label:element.Name,value:element.Id});
-    }*/
-    // this.ut.push({label:this.userTypes[1].Name,value:this.userTypes[1].Id});
+  ) { 
+    
+    this.createForm();
 }
 
+  createForm()
+  {
+    this.accountForm=this.formBuilder.group(
+      {
+        firstName:['', [Validators.required
+                       ,Validators.maxLength(50)
+                       ,Validators.minLength(4)
+                       ,ValidationService.alphabetValidator
+                       ] ],
+        middleName:['', Validators.required ],
+        lastName:['', Validators.required ],
+        userName:['',[Validators.required]],
+        password:['',[Validators.required]],
+        confirm:['',[Validators.required]],
+        userType:['',[Validators.required]],  
+      }
+    );
+
+  }
+
+
+ 
   getAccounts():void{
     this.accountService.getAccounts().then(accounts=>this.accounts=accounts);
   }
   getUserType():void{
     this.ut=[];
     this.ut.push({label:'All',value:null});
-    //this.userTypeService.getUserTypes().then(userTypes=>this.userTypes=userTypes);
+    
       this.userTypeService.getUserTypes().then(a=>{
         a.forEach(element => {
             this.ut.push({label:element.Name,value:{id:element.Id,name:element.Name}});

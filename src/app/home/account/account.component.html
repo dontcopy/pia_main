@@ -36,16 +36,35 @@
 
 <p-dialog header="Account Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
  
-        <div class="class=ui-grid ui-grid-responsive ui-fluid" *ngIf="account">
-    <div class="row">
-       
-         <div class="col s6">
-              <label>Username</label>
-          <input pInputText id="UserName" [(ngModel)]="account.UserName" type="text" class="validate" />
-        </div>
-
-     </div>
+    <form [formGroup]="accountForm" novalidate>
+    <div>
+    <label class="center-block">First Name:
+    <input formControlName="firstName">
+    </label>
+     <validation-control [control]="accountForm.controls.firstName"></validation-control>
+ 
+    <label class="center-block">Middle Name:
+    <input formControlName="middleName">
+    </label>
+    <label class="center-block">Last Name:
+    <input formControlName="lastName">
+    </label>
+    <label class="center-block">UserName:
+    <input formControlName="userName">
+    </label>
+    <label class="center-block">Password:
+    <input formControlName="password" type="password">
+    </label>
+    <label class="center-block">Confirm Password:
+    <input formControlName="confirm" type="password">
+    </label>
+    <label class="center-block">User Type:
+    <input formControlName="userType">
+    </label>
+    <p>Form value: {{ accountForm.value | json }}</p>
+    <p>Form status: {{ accountForm.status | json }}</p>
     </div>
+    </form> 
     <p-footer>
         <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
             <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete" *ngIf="displayDelete">Delete</button>
