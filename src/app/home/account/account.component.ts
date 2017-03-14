@@ -8,6 +8,8 @@ import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } 
 import { accountValidation } from "./account.validation";
 import { ValidationControlComponent } from "../../shared/validation-control/validation-control.component";
 import { ValidationService } from "../../service/validation-service";
+import { CurrencyService } from "../../service/currency-service";
+import { Currency } from "../../model/currency";
 
 
 
@@ -15,7 +17,7 @@ import { ValidationService } from "../../service/validation-service";
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css'],
-  providers:[AccountService,UserTypeService],
+  providers:[AccountService,UserTypeService,CurrencyService],
  
 })
 export class AccountComponent implements OnInit {
@@ -27,14 +29,16 @@ export class AccountComponent implements OnInit {
   account:Account = new Account();
   displayDelete:boolean;
   ut: SelectItem[];
+  cu:SelectItem[];
   userTypes:UserType[];
+  selectedCurrencyCodes:string[]=[];
   selectedUserType: string;
   accountForm:FormGroup;  
   accountValidationForm:accountValidation;
-  
+  currencies:Currency[];
   constructor (
     private accountService:AccountService,private userTypeService:UserTypeService
-    ,private formBuilder:FormBuilder
+    ,private formBuilder:FormBuilder,private CurrencyService:CurrencyService
       
   ) { 
     
@@ -55,7 +59,11 @@ export class AccountComponent implements OnInit {
         userName:['',[Validators.required]],
         password:['',[Validators.required]],
         confirm:['',[Validators.required]],
-        userType:['',[Validators.required]],  
+        userType:['',[Validators.required]], 
+        assignedCurrency:this.formBuilder.group({
+        selectedCurrencyCodes:[[]], 
+        })
+       
       }
     );
 
@@ -77,10 +85,20 @@ export class AccountComponent implements OnInit {
         )});
         this.userTypeService.getUserTypes().then(a=>this.userTypes=a);
   }
+  getCurrencies():void{
+    this.cu=[];
+    this.CurrencyService.getCurrency().then(c=>
+    {
+      c.forEach(element=>{
+        this.cu.push({label:element.Code,value:element.Code});
+      })
+    });
+  }
  
   ngOnInit(): void{
     this.getAccounts();
     this.getUserType();
+    this.getCurrencies();
     this.selectedAccount=null;
     
     

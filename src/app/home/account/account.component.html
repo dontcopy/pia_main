@@ -24,8 +24,11 @@
 <div class="col s12">        
 
 
-<p-dataTable [value]="accounts" [paginator]="true" [rows]="10"  [globalFilter]="gb" [(selection)]="selectedAccount" (onRowSelect)="onRowSelect($event)" #dt>
-       <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+<p-dataTable [value]="accounts" [paginator]="true" [rows]="10"  [globalFilter]="gb" [(selection)]="selectedAccount" (onRowSelect)="onRowSelect($event)" exportFilename="accounts" #dt>
+ <p-header> <div class="ui-helper-clearfix">
+            <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left">Export</button>
+        </div></p-header>
+  <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
   <p-column field="PiaUserId" header="Id" [sortable]="true"></p-column>
   <p-column field="FirstName" header="FirstName" [filter]="true" filterPlaceholder="Search"></p-column>
   <p-column field="MiddleName" header="MiddleName" [filter]="true" filterPlaceholder="Search"></p-column>
@@ -38,8 +41,8 @@
  
     <form [formGroup]="accountForm" novalidate>
   
-   
-    <div>
+    <div class="row">
+    <div class="col s4">
  
     <label class="center-block">First Name:
     <input formControlName="firstName">
@@ -62,12 +65,20 @@
     <input formControlName="confirm" type="password">
     </label>
     <label class="center-block">User Type:
-     <select formControlName="userType">
+    
+    </label>
+     <select formControlName="userType" class="none">
+           <option value="" disabled selected>Choose your option</option>
       <option *ngFor="let userType of userTypes" [value]=userType.Id >{{userType.Name}}</option>
     </select>
-    </label>
+    </div>
+    <div class="col s8" formGroupName="assignedCurrency">
+    <label>Assigned Currency:</label>
+    <p-selectButton  [options]="cu" formControlName="selectedCurrencyCodes" multiple="multiple"></p-selectButton>
+    <div class="divider"></div>
     <p>Form value: {{ accountForm.value | json }}</p>
     <p>Form status: {{ accountForm.status | json }}</p>
+    </div>
     </div>
     </form> 
     <p-footer>
