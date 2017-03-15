@@ -16,7 +16,7 @@ public user = new User('','');
         private _service:AuthenticationService) {}
  
     login() {
-        if(!this._service.login(this.user)){
+        if(!this._service.authenticate(this.user)){
             this.errorMsg = 'Failed to login';
         }
     }
