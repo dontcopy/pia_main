@@ -5,16 +5,12 @@ import { Http, Headers } from "@angular/http";
 import 'rxjs/add/operator/map';
 export class User {
   constructor(
-    public email: string,
+    public username: string,
     public password: string) { }
 }
 
 
-var users = [
-  new User('admin@admin.com','adm9'),
-  new User('a@a','a'),
-  new User('user1@gmail.com','a23')
-];
+
  
 @Injectable()
 export class AuthenticationService {
@@ -23,29 +19,54 @@ export class AuthenticationService {
     private http:Http,private _router: Router,private localStorageService: LocalStorageService){}
 
   logout() {
-    this.localStorageService.remove("user");
+    this.localStorageService.remove("token");
     this._router.navigate(['login']);
   }
   authenticate(user) {
   var body = `username=${user.username}&password=${user.password}&grant_type=password`;
-  
+  var body2 = `username=Adm1nistr4tor&password=P@ss1234&grant_type=password`;
   var headers = new Headers();
   headers.append('Content-Type', 'application/x-www-form-urlencoded');
   
-  this.http
-    .post('http://172.25.32.22/PIAPI/oauth2/token', body, { headers: headers })
+  this.http.post('http://172.25.32.22/PIAPI/oauth2/token', body , {headers: headers})
+  .map(response=>response.json())
+  .subscribe(
+    data => this.storeToken(data),
+    err => console.log(err),
+    () => console.log('Call Complete')
+  );
+  /*
+  this.http.post('http://172.25.32.22/PIAPI/oauth2/token/',body2, { headers: headers })
     .map(response => response.json())
     .subscribe(
       response => this.storeToken(response.access_token),
     
       () => console.log('Authentication Complete')
+    );*/
+}
+
+getAuth(user) {
+  var body = `username=${user.username}&password=${user.password}&grant_type=password`;
+  this.http.get('http://172.25.32.22/PIAPI/oauth2/token'+body)
+    .map(res => res.json())
+    .subscribe(
+      res => this.storeToken(res.access_token) ,
+      () => console.log('Auth Complete')
     );
 }
-  storeToken(token)
+
+  storeToken(response)
   {
-      this.localStorageService.set("token", token);
+      console.log('Received:' + response)
+      
+      if (response.access_token!=null){
+    this.localStorageService.set("token", response.access_token);
+      this._router.navigate(['home']);      
+      return true;
+    }
+    return false;
   }
-  login(user){
+ /* login(user){
   
     var authenticatedUser = users.find(u => u.email === user.email);
     if (authenticatedUser && authenticatedUser.password === user.password){
@@ -56,7 +77,7 @@ export class AuthenticationService {
     }
     return false;
  
-  }
+  }*/
  
    checkCredentials(){
     if (this.localStorageService.get("token") === null){
