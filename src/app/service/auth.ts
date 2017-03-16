@@ -24,7 +24,7 @@ export class AuthenticationService {
   }
   authenticate(user) {
   var body = `username=${user.username}&password=${user.password}&grant_type=password`;
-  var body2 = `username=Adm1nistr4tor&password=P@ss1234&grant_type=password`;
+  
   var headers = new Headers();
   headers.append('Content-Type', 'application/x-www-form-urlencoded');
   
@@ -35,14 +35,7 @@ export class AuthenticationService {
     err => console.log(err),
     () => console.log('Call Complete')
   );
-  /*
-  this.http.post('http://172.25.32.22/PIAPI/oauth2/token/',body2, { headers: headers })
-    .map(response => response.json())
-    .subscribe(
-      response => this.storeToken(response.access_token),
-    
-      () => console.log('Authentication Complete')
-    );*/
+ 
 }
 
 getAuth(user) {
@@ -66,18 +59,7 @@ getAuth(user) {
     }
     return false;
   }
- /* login(user){
-  
-    var authenticatedUser = users.find(u => u.email === user.email);
-    if (authenticatedUser && authenticatedUser.password === user.password){
-      this.localStorageService.set("user", authenticatedUser);
-  
-      this._router.navigate(['home']);      
-      return true;
-    }
-    return false;
  
-  }*/
  
    checkCredentials(){
     if (this.localStorageService.get("token") === null){
