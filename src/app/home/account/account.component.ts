@@ -10,6 +10,7 @@ import { ValidationControlComponent } from "../../shared/validation-control/vali
 import { ValidationService } from "../../service/validation-service";
 import { CurrencyService } from "../../service/currency-service";
 import { Currency } from "../../model/currency";
+import { Observable } from "rxjs/Observable";
 
 
 
@@ -21,8 +22,9 @@ import { Currency } from "../../model/currency";
  
 })
 export class AccountComponent implements OnInit {
-   
-  accounts:Account[];
+  errorMessage:string; 
+  accounts:Account[];;
+   accountss:Observable<Array<Account>>;;
   selectedAccount:Account;
   displayDialog:boolean;
   newAccount:boolean;
@@ -72,7 +74,9 @@ export class AccountComponent implements OnInit {
 
  
   getAccounts():void{
-    this.accountService.getAccounts().then(accounts=>this.accounts=accounts);
+    //this.accountService.getAccounts().then(accounts=>this.accounts=accounts);
+    this.accountss=this.accountService.getPiaAccount();
+    //this.accountService.getPiaAccount().then(accounts=>this.accounts=accounts);
   }
   getUserType():void{
     this.ut=[];
@@ -94,9 +98,19 @@ export class AccountComponent implements OnInit {
       })
     });
   }
+
+  testLoad():void{
+    this.accountService
+    .createService("http://172.25.32.22/PIAPI/api/user/GetPiaUsers","{\"PiaUserTypeId\":3,\"Status\":1,\"PageNumber\":1,\"PageSize\":100}")
+   
+    .subscribe(
+      res=>this.accounts=JSON.parse(res),error => this.errorMessage = <any>error
+    );
+  }
  
   ngOnInit(): void{
-    this.getAccounts();
+   // this.getAccounts();
+   this.testLoad();
     this.getUserType();
     this.getCurrencies();
     this.selectedAccount=null;
@@ -114,9 +128,9 @@ export class AccountComponent implements OnInit {
         this.displayDialog = true;
         this.displayDelete=false;
     }
-    
+   
     save() {
-        if(this.newAccount)
+       if(this.newAccount)
             this.accounts.push(this.account);
         else
             this.accounts[this.findSelectedAccountIndex()] = this.account;
@@ -126,7 +140,7 @@ export class AccountComponent implements OnInit {
     }
     
     delete() {
-        if(this.findSelectedAccountIndex()>-1)
+       if(this.findSelectedAccountIndex()>-1)
         {
         this.accounts.splice(this.findSelectedAccountIndex(), 1);
         this.account = null;
@@ -153,3 +167,4 @@ export class AccountComponent implements OnInit {
         return this.accounts.indexOf(this.selectedAccount);
     }
 }
+
