@@ -160,17 +160,22 @@
         all: unset;
     }
 }
-
-
-main {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-  }
-
-h3{
+main
+{
+  font-family: roboto;
+  
+}
+header{
+    margin-left: 25px;
+}
+#filterLabel
+{
+    margin-bottom: -18px;
     font-weight: 300;
-    font-family: roboto;
+}
+#label
+{
+    font-weight: 500;
 }
 
 /*  main {

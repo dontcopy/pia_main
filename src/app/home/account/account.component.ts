@@ -11,6 +11,8 @@ import { ValidationService } from "../../service/validation-service";
 import { CurrencyService } from "../../service/currency-service";
 import { Currency } from "../../model/currency";
 import { Observable } from "rxjs/Observable";
+import { Log } from "../../model/log";
+import { LogService } from "../../service/log-service";
 
 
 
@@ -18,7 +20,7 @@ import { Observable } from "rxjs/Observable";
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css'],
-  providers:[AccountService,UserTypeService,CurrencyService],
+  providers:[AccountService,UserTypeService,CurrencyService,LogService],
  
 })
 export class AccountComponent implements OnInit {
@@ -40,7 +42,7 @@ export class AccountComponent implements OnInit {
   currencies:Currency[];
   constructor (
     private accountService:AccountService,private userTypeService:UserTypeService
-    ,private formBuilder:FormBuilder,private CurrencyService:CurrencyService
+    ,private formBuilder:FormBuilder,private CurrencyService:CurrencyService,private LogService:LogService
       
   ) { 
     
@@ -165,6 +167,24 @@ export class AccountComponent implements OnInit {
     
     findSelectedAccountIndex(): number {
         return this.accounts.indexOf(this.selectedAccount);
+    }
+    logs: Log[];
+    
+   // msgs: Message[] = [];
+    loadData(event) {
+        //initialize
+        if(!this.logs) {
+            this.LogService.getLogs().then(logs => this.logs = logs);
+        }
+        
+        else {
+            let newArray = this.logs.slice(0);
+            for(let i = 0; i < newArray.length; i++) {
+                this.logs.push(newArray[i]);
+            }
+           // this.msgs = [];
+           // this.msgs.push({severity:'info', summary:'Data Loaded', detail:'Between ' + event.first + ' and ' + (event.first + event.rows)});
+        }        
     }
 }
 

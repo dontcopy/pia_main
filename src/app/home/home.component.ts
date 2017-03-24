@@ -12,7 +12,7 @@ constructor(
         private _service:AuthenticationService){}
  
     ngOnInit(){
-        //this._service.checkCredentials();
+        this._service.checkCredentials();
     }
  
     logout() {

@@ -12,6 +12,8 @@ import {DropdownModule} from 'primeng/primeng';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ValidationControlComponent } from "../shared/validation-control/validation-control.component";
 import {SelectButtonModule} from 'primeng/primeng';
+import {DataScrollerModule} from 'primeng/primeng';
+
 @NgModule({
   declarations: [
    ValidationControlComponent,
@@ -25,8 +27,8 @@ import {SelectButtonModule} from 'primeng/primeng';
     CommonModule,
     HomeRoutingModule,
     ReactiveFormsModule,
-    DataGridModule,DataTableModule,SharedModule,DialogModule,DropdownModule,SelectButtonModule
-    
+    DataGridModule,DataTableModule,SharedModule,DialogModule,DropdownModule,SelectButtonModule,
+    DataScrollerModule
   ],
 
 })

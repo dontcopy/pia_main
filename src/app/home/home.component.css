@@ -1,0 +1,30 @@
+main
+{
+  font-family: roboto;
+  
+}
+
+
+h3{
+    font-weight: 300;
+  
+}
+
+#homeMain
+{
+    padding-left: 300px; 
+}
+a
+{
+  color:white;
+  font-family: roboto;
+  font-weight: 300;
+}
+
+a:active
+{
+  color:white;
+  font-family: roboto;
+  font-weight: 500;
+}
+

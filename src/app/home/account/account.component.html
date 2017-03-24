@@ -1,7 +1,8 @@
-<main>
+<main><div class="content">
 <div class="row">
-  <header >
-<h3>ACCOUNT</h3>
+  <header><ul>
+ <li><h5 id="filterLabel">{{selectedUserType ? selectedUserType.name : 'ALL'}}</h5></li>    
+<li><h3 id="label">ACCOUNT</h3></li></ul>
 </header>
 
    <!-- <div class="input-field col s4">
@@ -22,7 +23,7 @@
        <div>
           <label>FILTER BY:</label>
             <p-dropdown [options]="ut" [style]="{'width':'150px'}"  [(ngModel)]="selectedUserType" placeholder="Select a UT"></p-dropdown>
-<p>Selected UserType: {{selectedUserType ? selectedUserType.name : 'All'}}</p>   
+ 
            </div>
         </div>
           </div>
@@ -32,16 +33,16 @@
 <div class="col s12">        
 
 
-<p-dataTable [value]="accounts" [paginator]="true" [rows]="10"  [globalFilter]="gb" [(selection)]="selectedAccount" (onRowSelect)="onRowSelect($event)" exportFilename="accounts" #dt>
+<p-dataTable [value]="accounts" [paginator]="true" [rows]="20"  [globalFilter]="gb" [(selection)]="selectedAccount" (onRowSelect)="onRowSelect($event)" exportFilename="accounts" #dt>
  <p-header> <div class="ui-helper-clearfix">
             <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left">Export</button>
         </div></p-header>
   <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
-  <p-column field="PiaUserId" header="Id" [sortable]="true"></p-column>
+  <p-column field="UserName" header="UserName"></p-column>
   <p-column field="FirstName" header="FirstName" [filter]="true" filterPlaceholder="Search"></p-column>
   <p-column field="MiddleName" header="MiddleName" [filter]="true" filterPlaceholder="Search"></p-column>
   <p-column field="LastName" header="LastName"></p-column>
-   <p-column field="UserName" header="UserName"></p-column>
+   <p-column field="DateCreated" header="Date Created"></p-column>
 <p-footer><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add">Add</button></div></p-footer>
 </p-dataTable>
 
@@ -99,17 +100,22 @@
 
 
 </div>
-
+</div>
 </div>
 </main>
 <footer class="page-footer white">
           <div class="container">
             <div class="row">
-              <div class="col l6 s12">
-                <h5>Footer Content</h5>
-                <p >You can use rows and columns here to organize your footer content.</p>
+              <div class="col s8">
+                <h5>Logs</h5>
+                <div >
+               <p-dataScroller [inline]="true" scrollHeight="150px"  [value]="logs" [rows]="10" [lazy]="true" [buffer]="0.4" (onLazyLoad)="loadData($event)">
+ <template let-log pTemplate="item">
+   <span>{{log.Message}}</span>
+    </template>
+</p-dataScroller></div>
               </div>
-              <div class="col l4 offset-l2 s12">
+              <div class="col s4">
                 <h5>Links</h5>
                 <ul>
                   <li><a  href="#!">Link 1</a></li>
