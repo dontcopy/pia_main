@@ -13,6 +13,8 @@ import { Currency } from "../../model/currency";
 import { Observable } from "rxjs/Observable";
 import { Log } from "../../model/log";
 import { LogService } from "../../service/log-service";
+import { LazyLoadEvent } from "primeng/components/common/api";
+
 
 
 
@@ -40,6 +42,7 @@ export class AccountComponent implements OnInit {
   accountForm:FormGroup;  
   accountValidationForm:accountValidation;
   currencies:Currency[];
+  totalRecords: number;
   constructor (
     private accountService:AccountService,private userTypeService:UserTypeService
     ,private formBuilder:FormBuilder,private CurrencyService:CurrencyService,private LogService:LogService
@@ -103,7 +106,21 @@ export class AccountComponent implements OnInit {
 
   testLoad():void{
     this.accountService
-    .createService("http://172.25.32.22/PIAPI/api/user/GetPiaUsers","{\"PiaUserTypeId\":3,\"Status\":1,\"PageNumber\":1,\"PageSize\":100}")
+    .createService("http://172.25.32.22/PIAPI/api/user/GetPiaUsers","{\"PiaUserTypeId\":3,\"Status\":1,\"PageNumber\":1,\"PageSize\":10}")
+   
+    .subscribe(
+      res=>this.accounts=JSON.parse(res),error => this.errorMessage = <any>error
+    );
+    
+  }
+
+
+loadAccountsLazy(event:LazyLoadEvent)
+  {
+
+    var pageNumber=(event.first+event.rows)/event.rows;
+this.accountService
+    .createService("http://172.25.32.22/PIAPI/api/user/GetPiaUsers","{\"PiaUserTypeId\":3,\"Status\":1,\"PageNumber\":"+pageNumber+",\"PageSize\":"+event.rows+"}")
    
     .subscribe(
       res=>this.accounts=JSON.parse(res),error => this.errorMessage = <any>error
@@ -112,6 +129,7 @@ export class AccountComponent implements OnInit {
  
   ngOnInit(): void{
    // this.getAccounts();
+   this.totalRecords=50;
    this.testLoad();
     this.getUserType();
     this.getCurrencies();

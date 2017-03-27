@@ -33,17 +33,19 @@
 <div class="col s12">        
 
 
-<p-dataTable [value]="accounts" [paginator]="true" [rows]="20"  [globalFilter]="gb" [(selection)]="selectedAccount" (onRowSelect)="onRowSelect($event)" exportFilename="accounts" #dt>
+<p-dataTable  [lazy]="true" [totalRecords]="totalRecords" [value]="accounts" [paginator]="true" [rows]="10"  [globalFilter]="gb" [(selection)]="selectedAccount" (onRowSelect)="onRowSelect($event)" exportFilename="accounts"  (onLazyLoad)="loadAccountsLazy($event)" #dt>
  <p-header> <div class="ui-helper-clearfix">
             <button type="button" pButton icon="fa-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="float:left">Export</button>
+            <div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add">Add</button></div>
         </div></p-header>
   <p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
   <p-column field="UserName" header="UserName"></p-column>
   <p-column field="FirstName" header="FirstName" [filter]="true" filterPlaceholder="Search"></p-column>
   <p-column field="MiddleName" header="MiddleName" [filter]="true" filterPlaceholder="Search"></p-column>
   <p-column field="LastName" header="LastName"></p-column>
-   <p-column field="DateCreated" header="Date Created"></p-column>
-<p-footer><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add">Add</button></div></p-footer>
+  <p-column field="DateCreated" header="Date Created"></p-column>
+  <p-column field="IsActive" header="Active"></p-column>
+<p-footer></p-footer>
 </p-dataTable>
 
 <p-dialog header="Account Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
