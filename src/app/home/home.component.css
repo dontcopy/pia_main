@@ -27,4 +27,16 @@ a:active
   font-family: roboto;
   font-weight: 500;
 }
+/*i.icon-white {
+    color: white;
+}*/
+
+.side-nav li>a>i, .side-nav li>a>[class^="mdi-"], .side-nav li>a>[class*="mdi-"], .side-nav li>a>i.material-icons {
+    float: left;
+    height: 48px;
+    line-height: 48px;
+    margin: 0 5px 0 0;
+    width: 24px;
+    color: white;
+}
 
