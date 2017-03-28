@@ -13,7 +13,7 @@ import { Currency } from "../../model/currency";
 import { Observable } from "rxjs/Observable";
 import { Log } from "../../model/log";
 import { LogService } from "../../service/log-service";
-import { LazyLoadEvent } from "primeng/components/common/api";
+import { LazyLoadEvent, FilterMetadata } from "primeng/components/common/api";
 
 
 
@@ -36,6 +36,8 @@ export class AccountComponent implements OnInit {
   displayDelete:boolean;
   ut: SelectItem[];
   cu:SelectItem[];
+  filter:FilterMetadata;
+ 
   userTypes:UserType[];
   selectedCurrencyCodes:string[]=[];
   selectedUserType: string;
@@ -114,14 +116,30 @@ export class AccountComponent implements OnInit {
     
   }
 
+getFilteredData(event)
+  {
+    
+//this.filter=event.filters;
+// var test=this.filter.matchMode;
+/*    var pageNumber=(event.first+event.rows)/event.rows;
+this.accountService
+    .createService("http://172.25.32.22/PIAPI/api/user/GetPiaUsers","{\"PiaUserTypeId\":3,\"Status\":1,\"PageNumber\":"+pageNumber+",\"PageSize\":"+event.rows+"}")
+   
+    .subscribe(
+      res=>this.accounts=JSON.parse(res),error => this.errorMessage = <any>error
+    );*/
+  }
 
 loadAccountsLazy(event:LazyLoadEvent)
   {
+  //  event.globalFilter;
+//this.filter=event.filters;
+// var test=this.filter.matchMode;
 
     var pageNumber=(event.first+event.rows)/event.rows;
 this.accountService
     .createService("http://172.25.32.22/PIAPI/api/user/GetPiaUsers","{\"PiaUserTypeId\":3,\"Status\":1,\"PageNumber\":"+pageNumber+",\"PageSize\":"+event.rows+"}")
-   
+ 
     .subscribe(
       res=>this.accounts=JSON.parse(res),error => this.errorMessage = <any>error
     );
@@ -147,6 +165,11 @@ this.accountService
         this.account = new Account();
         this.displayDialog = true;
         this.displayDelete=false;
+          // this.accountForm.reset('', { onlySelf: true });
+          for(var name in this.accountForm.controls)
+          {
+            this.accountForm.controls[name].setValue('');
+          }
     }
    
     save() {
@@ -173,6 +196,17 @@ this.accountService
         this.account = this.cloneAccount(event.data);
         this.displayDialog = true;
         this.displayDelete=true;
+       
+    }
+    onViewData(account:Account)
+    {
+       //this.selectedAccount=account;
+        console.log(account.LastName);
+          this.account = this.cloneAccount(account);
+        this.displayDialog = true;
+        this.displayDelete=true;
+         this.accountForm.controls["firstName"].setValue(this.account.FirstName);
+ this.accountForm.controls["userType"].setValue(this.account.PiaUserTypeId);
     }
     
     cloneAccount(c: Account): Account {
